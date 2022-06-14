@@ -71,6 +71,9 @@ MSVC_2017 = 'msvc2017'
 MSVC_2019 = 'msvc2019'
 MSVC_2022 = 'msvc2022'
 
+ARCH_32 = "i686"
+ARCH_64 = "x86_64"
+
 #DEFAULT_COMPILERS = [MINGW, MSVC_2019]
 
 """
@@ -100,12 +103,6 @@ MINGW_4_7_2 = "mingw4.7.2"
 
 MYSQL_WIN32_URL = "https://cdn.mysql.com//Downloads/MySQL-5.5/mysql-5.5.62-win32.zip"
 MYSQL_WIN64_URL = "https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.29-winx64.zip"
-
-#MINGW64_COMPILERS = [MINGW64_7_3_0, MINGW64_8_1_0, MINGW64_11_2_0]
-
-#QT_6_2_2 = "6.2.2"
-#QT_5_15_0 = "5.15.0"
-#QT_5_12_0 = "5.12.0"
 
 def to_version(s):
     prefixes = ["qt", "mingw", "msvc"]
@@ -225,6 +222,17 @@ def testenv_step(local):
     cmds.append('where 7z || exit /b 0')
     #cmds.append('where ninja')
     return pack(cmds, "test env", local)
+
+def install_ninja_step(local):
+    cmds = []
+    if local:
+        python_path = ["C:\\Miniconda3","C:\\Miniconda3\\Scripts"]
+    else:
+        python_path = ["C:\\Miniconda","C:\\Miniconda\\Scripts"]
+    cmds.append(set_path(python_path))
+    cmds.append("pip install aqtinstall")
+    cmds.append("aqt install-tool windows desktop tools_ninja qt.tools.ninja")
+    return pack(cmds, "install ninja", local)
 
 def upload_step(qt, compiler, arch):
     return {
@@ -392,11 +400,8 @@ def build_step(qt, compiler, arch, local):
     cmds.append(rmdir(qt_dir_name))
     cmds.append(extract(name))
     
-    if local:
-        ninja_path = "C:\\Ninja"
-    else:
-        ninja_path = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja"
-
+    ninja_path = "%CD%\\Tools\\Ninja"
+    
     # download compiler
     if is_mingw(compiler):
         url = mingw_compiler_url(compiler, arch)
@@ -537,26 +542,30 @@ def query():
             f.write(v + "\n")
             f.write(output)
 
-ARCH_32 = "i686"
-ARCH_64 = "x86_64"
-
-def libmysql_path(arch):
-    if arch ==  ARCH_64:
-        return 
-        url = "https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.29-winx64.zip"
-    elif arch == ARCH_32:
-        url = "https://cdn.mysql.com//Downloads/MySQL-5.5/mysql-5.5.62-win32.zip"
+import textwrap
 
 def main():
     #query(); return
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--set1', action='store_true')
-    parser.add_argument('--set2', action='store_true')
-    parser.add_argument('--qt', nargs='+')
-    parser.add_argument('--arch', nargs='+')
-    parser.add_argument('--compiler', nargs='+')
-    parser.add_argument('--recent-qt', type=int)
+    parser = argparse.ArgumentParser(prog="generate.py",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+      epilog="""specify triples of QT_VERSION, COMPILER, ARCH you want to build 
+or use --qt --arch --compiler to build all combinations
+
+examples:
+  python generate.py 5.15.2 mingw 64 6.3.0 msvc 64
+  python generate.py --qt 6.3.0
+  python generate.py --qt 5.15.2 --compiler msvc
+  python generate.py --qt 5.15.2 --arch 64
+  python generate.py --set1
+  python generate.py --recent-qt 3
+      """)
+    parser.add_argument('--set1', action='store_true', help="build {} and {}".format(QT_6_3_0, QT_5_15_2))
+    parser.add_argument('--set2', action='store_true', help="build all qt versions")
+    parser.add_argument('--qt', nargs='+', help="qt versions to build")
+    parser.add_argument('--arch', nargs='+', help="architectures to build (32 or 64 or both)")
+    parser.add_argument('--compiler', nargs='+', help="compiler(s) to use (msvc, mingw)")
+    parser.add_argument('--recent-qt', type=int, help="build N recent qt versions")
     parser.add_argument('args', nargs='*')
     
     args = parser.parse_args()
@@ -568,6 +577,8 @@ def main():
 
     steps_local.append(testenv_step(True))
     steps_github.append(testenv_step(False))
+    steps_local.append(install_ninja_step(local=True))
+    steps_github.append(install_ninja_step(local=False))
 
     release_step = ReleaseStep()
     
