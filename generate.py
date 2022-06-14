@@ -183,7 +183,7 @@ def mingw_compiler_url(compiler, arch):
 
 def arch_suffix(arch):
     return {
-        ARCH_32: '',
+        ARCH_32: '_32',
         ARCH_64: '_64',
     }[arch]
 
@@ -562,6 +562,9 @@ examples:
       """)
     parser.add_argument('--set1', action='store_true', help="build {} and {}".format(QT_6_3_0, QT_5_15_2))
     parser.add_argument('--set2', action='store_true', help="build all qt versions")
+    parser.add_argument('--set3', action='store_true', help="build all qt versions >= 5.12")
+    parser.add_argument('--set4', action='store_true', help="build all qt versions >= 6.0")
+    parser.add_argument('--set5', action='store_true', help="build all qt versions >= 5.12 and < 6.0")
     parser.add_argument('--qt', nargs='+', help="qt versions to build")
     parser.add_argument('--arch', nargs='+', help="architectures to build (32 or 64 or both)")
     parser.add_argument('--compiler', nargs='+', help="compiler(s) to use (msvc, mingw)")
@@ -646,21 +649,41 @@ examples:
     else:
         arg_compiler = args.compiler
 
+    use_set1 = True
+
     if args.set1:
-        flavours = filter_optimal(product([QT_6_3_0, QT_5_15_2], arg_compiler, arg_arch))
+        pass
     
     if args.set2:
+        use_set1 = False
         flavours = filter_optimal(product(QTS, arg_compiler, arg_arch))
+
+    if args.set3:
+        use_set1 = False
+        qts = [v for v in QTS if to_version(v) >= to_version(QT_5_12_0)]
+        flavours = filter_optimal(product(qts, arg_compiler, arg_arch))
+
+    if args.set4:
+        use_set1 = False
+        qts = [v for v in QTS if to_version(v) >= to_version(QT_6_0_0)]
+        flavours = filter_optimal(product(qts, arg_compiler, arg_arch))
+
+    if args.set5:
+        use_set1 = False
+        qts = [v for v in QTS if to_version(v) < to_version(QT_6_0_0) and to_version(v) >= to_version(QT_5_12_0)]
+        flavours = filter_optimal(product(qts, arg_compiler, arg_arch))
     
     if args.qt is not None:
+        use_set1 = False
         flavours = filter_optimal(product(args.qt, arg_compiler, arg_arch))
 
     if args.recent_qt is not None:
+        use_set1 = False
         qts = QTS[-args.recent_qt:]
         print(qts)
         flavours = filter_optimal(product(qts, arg_compiler, arg_arch))
 
-    if len(args.args) == 0 and args.recent_qt is None and args.qt is None:
+    if use_set1:
         flavours = filter_optimal(product([QT_6_3_0, QT_5_15_2], arg_compiler, arg_arch))
 
     for qt, compiler, arch in flavours:
@@ -673,6 +696,13 @@ examples:
         steps_github.append(upload_step(qt, compiler, arch))
         release_step.add(qt, compiler, arch)
         release_step.add_once("libmysql-{}.zip".format(arch))
+
+    def min_to_hmin(m):
+        h = int(m / 60)
+        m = m - h * 60
+        return h, int(m)
+
+    print("{} flavours, estimated compile time {}:{:02d}".format(len(flavours), *min_to_hmin(len(flavours)*40)))
 
     steps_github.append(release_step.github())
 
