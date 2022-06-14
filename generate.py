@@ -652,8 +652,6 @@ def main():
     if len(args.args) == 0 and args.recent_qt is None and args.qt is None:
         flavours = filter_optimal(product([QT_6_3_0, QT_5_15_2], arg_compiler, arg_arch))
 
-    #print(flavours)
-
     for qt, compiler, arch in flavours:
         #qt = to_qt(qt)
         #arch = to_arch(arch)
