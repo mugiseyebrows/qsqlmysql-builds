@@ -500,8 +500,11 @@ def build_step(qt, compiler, arch, local):
     cmds.append(archive(dst + ".zip", dst))
 
     name = flavour_dir_name(qt, compiler, arch)
-    #cmds.append("7z a {}.zip {}".format(name, name))
     cmds.append(archive(name + ".zip", name))
+
+    # cleanup
+    cmds.append(rmdir(qt_dir_name))
+
     return pack(cmds, "flavour {} {} {}".format(qt, compiler, arch), local)
 
 
@@ -693,7 +696,7 @@ examples:
         print(qt, compiler, arch)
         steps_local.append(build_step(qt, compiler, arch, local=True))
         steps_github.append(build_step(qt, compiler, arch, local=False))
-        steps_github.append(upload_step(qt, compiler, arch))
+        #steps_github.append(upload_step(qt, compiler, arch))
         release_step.add(qt, compiler, arch)
         release_step.add_once("libmysql-{}.zip".format(arch))
 
@@ -712,7 +715,7 @@ examples:
 
     os.makedirs(os.path.dirname(wrokflow_path), exist_ok=True)
 
-    data = {"name":"main","on":"push","jobs":{"main": {"runs-on":"windows-2019","steps":steps_github}}}
+    data = {"name":"main","on":{"push":{"tags":"*"}},"jobs":{"main": {"runs-on":"windows-2019","steps":steps_github}}}
     with open(wrokflow_path, 'w', encoding='utf-8') as f:
         f.write(yaml.dump(data, None, Dumper=Dumper, sort_keys=False))
     with open(batch_path, 'w', encoding='utf-8') as f:

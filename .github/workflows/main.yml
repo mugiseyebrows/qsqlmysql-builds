@@ -1,5 +1,7 @@
 name: main
-on: push
+on:
+  push:
+    tags: '*'
 jobs:
   main:
     runs-on: windows-2019
@@ -41,10 +43,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.0-msvc2019-x86_64.zip" "qsqlmysql-qt6.0.0-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.0-msvc2019-x86_64
-        path: qsqlmysql-qt6.0.0-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.0.0 rmdir /q /s qtbase-everywhere-src-6.0.0
     - name: flavour qt6.0.0 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -70,10 +69,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.0.0-mingw8.1.0-i686.zip" "qsqlmysql-qt6.0.0-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.0-mingw8.1.0-i686
-        path: qsqlmysql-qt6.0.0-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.0.0 rmdir /q /s qtbase-everywhere-src-6.0.0
     - name: flavour qt6.0.0 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -99,10 +95,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.0-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.0.0-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.0-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.0.0-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.0.0 rmdir /q /s qtbase-everywhere-src-6.0.0
     - name: flavour qt6.0.1 msvc2019 x86_64
       shell: cmd
       run: |
@@ -127,10 +120,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.1-msvc2019-x86_64.zip" "qsqlmysql-qt6.0.1-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.1-msvc2019-x86_64
-        path: qsqlmysql-qt6.0.1-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.0.1 rmdir /q /s qtbase-everywhere-src-6.0.1
     - name: flavour qt6.0.1 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -156,10 +146,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.0.1-mingw8.1.0-i686.zip" "qsqlmysql-qt6.0.1-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.1-mingw8.1.0-i686
-        path: qsqlmysql-qt6.0.1-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.0.1 rmdir /q /s qtbase-everywhere-src-6.0.1
     - name: flavour qt6.0.1 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -185,10 +172,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.1-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.0.1-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.1-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.0.1-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.0.1 rmdir /q /s qtbase-everywhere-src-6.0.1
     - name: flavour qt6.0.2 msvc2019 x86_64
       shell: cmd
       run: |
@@ -213,10 +197,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.2-msvc2019-x86_64.zip" "qsqlmysql-qt6.0.2-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.2-msvc2019-x86_64
-        path: qsqlmysql-qt6.0.2-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.0.2 rmdir /q /s qtbase-everywhere-src-6.0.2
     - name: flavour qt6.0.2 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -242,10 +223,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.0.2-mingw8.1.0-i686.zip" "qsqlmysql-qt6.0.2-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.2-mingw8.1.0-i686
-        path: qsqlmysql-qt6.0.2-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.0.2 rmdir /q /s qtbase-everywhere-src-6.0.2
     - name: flavour qt6.0.2 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -271,10 +249,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.2-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.0.2-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.2-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.0.2-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.0.2 rmdir /q /s qtbase-everywhere-src-6.0.2
     - name: flavour qt6.0.3 msvc2019 x86_64
       shell: cmd
       run: |
@@ -299,10 +274,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.3-msvc2019-x86_64.zip" "qsqlmysql-qt6.0.3-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.3-msvc2019-x86_64
-        path: qsqlmysql-qt6.0.3-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.0.3 rmdir /q /s qtbase-everywhere-src-6.0.3
     - name: flavour qt6.0.3 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -328,10 +300,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.0.3-mingw8.1.0-i686.zip" "qsqlmysql-qt6.0.3-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.3-mingw8.1.0-i686
-        path: qsqlmysql-qt6.0.3-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.0.3 rmdir /q /s qtbase-everywhere-src-6.0.3
     - name: flavour qt6.0.3 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -357,10 +326,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.3-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.0.3-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.3-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.0.3-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.0.3 rmdir /q /s qtbase-everywhere-src-6.0.3
     - name: flavour qt6.0.4 msvc2019 x86_64
       shell: cmd
       run: |
@@ -385,10 +351,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.4-msvc2019-x86_64.zip" "qsqlmysql-qt6.0.4-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.4-msvc2019-x86_64
-        path: qsqlmysql-qt6.0.4-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.0.4 rmdir /q /s qtbase-everywhere-src-6.0.4
     - name: flavour qt6.0.4 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -414,10 +377,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.0.4-mingw8.1.0-i686.zip" "qsqlmysql-qt6.0.4-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.4-mingw8.1.0-i686
-        path: qsqlmysql-qt6.0.4-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.0.4 rmdir /q /s qtbase-everywhere-src-6.0.4
     - name: flavour qt6.0.4 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -443,10 +403,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.0.4-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.0.4-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.0.4-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.0.4-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.0.4 rmdir /q /s qtbase-everywhere-src-6.0.4
     - name: flavour qt6.1.0 msvc2019 x86_64
       shell: cmd
       run: |
@@ -471,10 +428,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.1.0-msvc2019-x86_64.zip" "qsqlmysql-qt6.1.0-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.0-msvc2019-x86_64
-        path: qsqlmysql-qt6.1.0-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.1.0 rmdir /q /s qtbase-everywhere-src-6.1.0
     - name: flavour qt6.1.0 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -500,10 +454,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.1.0-mingw8.1.0-i686.zip" "qsqlmysql-qt6.1.0-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.0-mingw8.1.0-i686
-        path: qsqlmysql-qt6.1.0-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.1.0 rmdir /q /s qtbase-everywhere-src-6.1.0
     - name: flavour qt6.1.0 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -529,10 +480,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.1.0-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.1.0-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.0-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.1.0-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.1.0 rmdir /q /s qtbase-everywhere-src-6.1.0
     - name: flavour qt6.1.1 msvc2019 x86_64
       shell: cmd
       run: |
@@ -557,10 +505,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.1.1-msvc2019-x86_64.zip" "qsqlmysql-qt6.1.1-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.1-msvc2019-x86_64
-        path: qsqlmysql-qt6.1.1-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.1.1 rmdir /q /s qtbase-everywhere-src-6.1.1
     - name: flavour qt6.1.1 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -586,10 +531,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.1.1-mingw8.1.0-i686.zip" "qsqlmysql-qt6.1.1-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.1-mingw8.1.0-i686
-        path: qsqlmysql-qt6.1.1-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.1.1 rmdir /q /s qtbase-everywhere-src-6.1.1
     - name: flavour qt6.1.1 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -615,10 +557,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.1.1-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.1.1-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.1-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.1.1-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.1.1 rmdir /q /s qtbase-everywhere-src-6.1.1
     - name: flavour qt6.1.2 msvc2019 x86_64
       shell: cmd
       run: |
@@ -643,10 +582,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.1.2-msvc2019-x86_64.zip" "qsqlmysql-qt6.1.2-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.2-msvc2019-x86_64
-        path: qsqlmysql-qt6.1.2-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.1.2 rmdir /q /s qtbase-everywhere-src-6.1.2
     - name: flavour qt6.1.2 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -672,10 +608,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.1.2-mingw8.1.0-i686.zip" "qsqlmysql-qt6.1.2-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.2-mingw8.1.0-i686
-        path: qsqlmysql-qt6.1.2-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.1.2 rmdir /q /s qtbase-everywhere-src-6.1.2
     - name: flavour qt6.1.2 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -701,10 +634,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.1.2-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.1.2-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.2-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.1.2-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.1.2 rmdir /q /s qtbase-everywhere-src-6.1.2
     - name: flavour qt6.1.3 msvc2019 x86_64
       shell: cmd
       run: |
@@ -729,10 +659,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.1.3-msvc2019-x86_64.zip" "qsqlmysql-qt6.1.3-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.3-msvc2019-x86_64
-        path: qsqlmysql-qt6.1.3-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.1.3 rmdir /q /s qtbase-everywhere-src-6.1.3
     - name: flavour qt6.1.3 mingw8.1.0 i686
       shell: cmd
       run: |
@@ -758,10 +685,7 @@ jobs:
         copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
         7z a "libmysql-i686.zip" "libmysql-i686"
         7z a "qsqlmysql-qt6.1.3-mingw8.1.0-i686.zip" "qsqlmysql-qt6.1.3-mingw8.1.0-i686"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.3-mingw8.1.0-i686
-        path: qsqlmysql-qt6.1.3-mingw8.1.0-i686
+        if exist qtbase-everywhere-src-6.1.3 rmdir /q /s qtbase-everywhere-src-6.1.3
     - name: flavour qt6.1.3 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -787,10 +711,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.1.3-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.1.3-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.1.3-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.1.3-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.1.3 rmdir /q /s qtbase-everywhere-src-6.1.3
     - name: flavour qt6.2.0 msvc2019 x86_64
       shell: cmd
       run: |
@@ -815,10 +736,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.0-msvc2019-x86_64.zip" "qsqlmysql-qt6.2.0-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.0-msvc2019-x86_64
-        path: qsqlmysql-qt6.2.0-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
     - name: flavour qt6.2.0 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -844,10 +762,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.0-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.2.0-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.0-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.2.0-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
     - name: flavour qt6.2.1 msvc2019 x86_64
       shell: cmd
       run: |
@@ -872,10 +787,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.1-msvc2019-x86_64.zip" "qsqlmysql-qt6.2.1-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.1-msvc2019-x86_64
-        path: qsqlmysql-qt6.2.1-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.2.1 rmdir /q /s qtbase-everywhere-src-6.2.1
     - name: flavour qt6.2.1 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -901,10 +813,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.1-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.2.1-mingw8.1.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.1-mingw8.1.0-x86_64
-        path: qsqlmysql-qt6.2.1-mingw8.1.0-x86_64
+        if exist qtbase-everywhere-src-6.2.1 rmdir /q /s qtbase-everywhere-src-6.2.1
     - name: flavour qt6.2.2 msvc2019 x86_64
       shell: cmd
       run: |
@@ -929,10 +838,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.2-msvc2019-x86_64.zip" "qsqlmysql-qt6.2.2-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.2-msvc2019-x86_64
-        path: qsqlmysql-qt6.2.2-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.2.2 rmdir /q /s qtbase-everywhere-src-6.2.2
     - name: flavour qt6.2.2 mingw11.2.0 x86_64
       shell: cmd
       run: |
@@ -958,10 +864,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.2-mingw11.2.0-x86_64.zip" "qsqlmysql-qt6.2.2-mingw11.2.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.2-mingw11.2.0-x86_64
-        path: qsqlmysql-qt6.2.2-mingw11.2.0-x86_64
+        if exist qtbase-everywhere-src-6.2.2 rmdir /q /s qtbase-everywhere-src-6.2.2
     - name: flavour qt6.2.3 msvc2019 x86_64
       shell: cmd
       run: |
@@ -986,10 +889,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.3-msvc2019-x86_64.zip" "qsqlmysql-qt6.2.3-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.3-msvc2019-x86_64
-        path: qsqlmysql-qt6.2.3-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.2.3 rmdir /q /s qtbase-everywhere-src-6.2.3
     - name: flavour qt6.2.3 mingw11.2.0 x86_64
       shell: cmd
       run: |
@@ -1015,10 +915,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.3-mingw11.2.0-x86_64.zip" "qsqlmysql-qt6.2.3-mingw11.2.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.3-mingw11.2.0-x86_64
-        path: qsqlmysql-qt6.2.3-mingw11.2.0-x86_64
+        if exist qtbase-everywhere-src-6.2.3 rmdir /q /s qtbase-everywhere-src-6.2.3
     - name: flavour qt6.2.4 msvc2019 x86_64
       shell: cmd
       run: |
@@ -1043,10 +940,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.4-msvc2019-x86_64.zip" "qsqlmysql-qt6.2.4-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.4-msvc2019-x86_64
-        path: qsqlmysql-qt6.2.4-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.2.4 rmdir /q /s qtbase-everywhere-src-6.2.4
     - name: flavour qt6.2.4 mingw11.2.0 x86_64
       shell: cmd
       run: |
@@ -1072,10 +966,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.4-mingw11.2.0-x86_64.zip" "qsqlmysql-qt6.2.4-mingw11.2.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.2.4-mingw11.2.0-x86_64
-        path: qsqlmysql-qt6.2.4-mingw11.2.0-x86_64
+        if exist qtbase-everywhere-src-6.2.4 rmdir /q /s qtbase-everywhere-src-6.2.4
     - name: flavour qt6.3.0 msvc2019 x86_64
       shell: cmd
       run: |
@@ -1100,10 +991,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.3.0-msvc2019-x86_64.zip" "qsqlmysql-qt6.3.0-msvc2019-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.3.0-msvc2019-x86_64
-        path: qsqlmysql-qt6.3.0-msvc2019-x86_64
+        if exist qtbase-everywhere-src-6.3.0 rmdir /q /s qtbase-everywhere-src-6.3.0
     - name: flavour qt6.3.0 mingw11.2.0 x86_64
       shell: cmd
       run: |
@@ -1129,10 +1017,7 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.3.0-mingw11.2.0-x86_64.zip" "qsqlmysql-qt6.3.0-mingw11.2.0-x86_64"
-    - uses: actions/upload-artifact@v3
-      with:
-        name: qsqlmysql-qt6.3.0-mingw11.2.0-x86_64
-        path: qsqlmysql-qt6.3.0-mingw11.2.0-x86_64
+        if exist qtbase-everywhere-src-6.3.0 rmdir /q /s qtbase-everywhere-src-6.3.0
     - uses: ncipollo/release-action@v1
       if: startsWith( github.ref, 'refs/tags/')
       with:
@@ -1176,6 +1061,6 @@ jobs:
           qsqlmysql-qt6.2.4-mingw11.2.0-x86_64.zip
           qsqlmysql-qt6.3.0-msvc2019-x86_64.zip
           qsqlmysql-qt6.3.0-mingw11.2.0-x86_64.zip
-          libmysql-x86_64.zip
           libmysql-i686.zip
+          libmysql-x86_64.zip
         token: ${{ secrets.GITHUB_TOKEN }}
