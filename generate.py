@@ -119,7 +119,7 @@ def qt_mingw_compiler(qt, arch):
     v = to_version(qt)
 
     if arch == ARCH_32:
-        if v >= to_version(QT_6_2_0):
+        if v >= to_version(QT_6_0_0):
             return None
 
     if v >= to_version(QT_6_2_2):
@@ -507,7 +507,7 @@ def build_step(qt, compiler, arch, local):
     cmds.append(archive(name + ".zip", name))
 
     # cleanup
-    #cmds.append(rmdir(qt_dir_name))
+    cmds.append(rmdir(qt_dir_name))
 
     return pack(cmds, "flavour {} {} {}".format(qt, compiler, arch), local)
 

@@ -19,6 +19,32 @@ jobs:
         set PATH=C:\Miniconda;C:\Miniconda\Scripts;%PATH%
         pip install aqtinstall
         aqt install-tool windows desktop tools_ninja qt.tools.ninja
+    - name: flavour qt6.2.0 msvc2019 x86_64
+      shell: cmd
+      run: |
+        if exist clear-env.bat call clear-env.bat
+        if not exist "mysql-8.0.29-winx64.zip" curl -L -o mysql-8.0.29-winx64.zip "https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.29-winx64.zip"
+        if not exist "mysql-8.0.29-winx64" 7z x -y "mysql-8.0.29-winx64.zip"
+        if not exist "qtbase-everywhere-src-6.2.0.zip" curl -L -o qtbase-everywhere-src-6.2.0.zip "https://download.qt.io/official_releases/qt/6.2/6.2.0/submodules/qtbase-everywhere-src-6.2.0.zip"
+        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
+        7z x -y "qtbase-everywhere-src-6.2.0.zip"
+        set INCLUDE=
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        set PATH=%CD%/mysql-8.0.29-winx64/lib;%CD%/mysql-8.0.29-winx64/bin;%CD%\Tools\Ninja;%PATH%
+        if not exist "qsqlmysql-qt6.2.0-msvc2019-x86_64" mkdir "qsqlmysql-qt6.2.0-msvc2019-x86_64"
+        pushd qtbase-everywhere-src-6.2.0
+        cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:\Qt\6.2.0\msvc2019_64 -DQT_QMAKE_TARGET_MKSPEC=win32-msvc -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DQT_BUILD_TESTS=FALSE -DQT_BUILD_EXAMPLES=FALSE -DCMAKE_CONFIGURATION_TYPES=Release;Debug -DQT_EXTRA_DEFINES=MySQL_INCLUDE_DIR=%CD%/../mysql-8.0.29-winx64/include;MySQL_LIBRARY=%CD%/../mysql-8.0.29-winx64/lib/libmysql.lib -DINPUT_opengl=desktop -G "Ninja Multi-Config" .
+        ninja -f build-Debug.ninja qsqlmysqld.dll
+        ninja -f build-Release.ninja qsqlmysql.dll
+        copy /y "plugins\sqldrivers\qsqlmysql.dll" "..\qsqlmysql-qt6.2.0-msvc2019-x86_64"
+        copy /y "plugins\sqldrivers\qsqlmysqld.dll" "..\qsqlmysql-qt6.2.0-msvc2019-x86_64"
+        popd
+        if not exist "libmysql-x86_64" mkdir "libmysql-x86_64"
+        copy /y "mysql-8.0.29-winx64\lib\libmysql.dll" "libmysql-x86_64"
+        copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
+        7z a "libmysql-x86_64.zip" "libmysql-x86_64"
+        7z a "qsqlmysql-qt6.2.0-msvc2019-x86_64.zip" "qsqlmysql-qt6.2.0-msvc2019-x86_64"
+        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
     - name: flavour qt6.2.0 mingw8.1.0 x86_64
       shell: cmd
       run: |
@@ -45,10 +71,12 @@ jobs:
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
         7z a "qsqlmysql-qt6.2.0-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.2.0-mingw8.1.0-x86_64"
+        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
     - uses: ncipollo/release-action@v1
       if: startsWith( github.ref, 'refs/tags/')
       with:
         artifacts: |
+          qsqlmysql-qt6.2.0-msvc2019-x86_64.zip
           qsqlmysql-qt6.2.0-mingw8.1.0-x86_64.zip
           libmysql-x86_64.zip
         token: ${{ secrets.GITHUB_TOKEN }}
