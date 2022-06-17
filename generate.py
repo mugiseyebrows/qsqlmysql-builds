@@ -465,7 +465,11 @@ def build_step(qt, compiler, arch, local):
             "."])
         cmds.append("cmake " + flags)
         #cmds.append('cmake --build .')
-        cmds.append("ninja qsqlmysql.dll")
+
+        cmds.append("ninja -f build-Debug.ninja qsqlmysqld.dll")
+        cmds.append("ninja -f build-Release.ninja qsqlmysql.dll")
+        #cmds.append("ninja -f build-Debug.ninja all")
+        #cmds.append("ninja -f build-Release.ninja all")
         
     else:
         def no_feature(feature):
@@ -503,7 +507,7 @@ def build_step(qt, compiler, arch, local):
     cmds.append(archive(name + ".zip", name))
 
     # cleanup
-    cmds.append(rmdir(qt_dir_name))
+    #cmds.append(rmdir(qt_dir_name))
 
     return pack(cmds, "flavour {} {} {}".format(qt, compiler, arch), local)
 
@@ -629,6 +633,8 @@ examples:
                 print("filtered out", qt, compiler, arch)
         return res
 
+    use_set1 = True
+
     for qt, compiler, arch in chunks(args.args, 3):
         qt = to_qt(qt)
         arch = to_arch(arch)
@@ -641,6 +647,7 @@ examples:
                 print("unexpected compiler {} {} {}".format(qt, compiler_, arch))
             continue
         flavours.append((qt, compiler, arch))
+        use_set1 = False
 
     if args.arch is None:
         arg_arch = [ARCH_32, ARCH_64]
@@ -651,8 +658,6 @@ examples:
         arg_compiler = [MSVC, MINGW]
     else:
         arg_compiler = args.compiler
-
-    use_set1 = True
 
     if args.set1:
         pass
