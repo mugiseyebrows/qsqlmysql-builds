@@ -19,64 +19,116 @@ jobs:
         set PATH=C:\Miniconda;C:\Miniconda\Scripts;%PATH%
         pip install aqtinstall
         aqt install-tool windows desktop tools_ninja qt.tools.ninja
-    - name: flavour qt6.2.0 msvc2019 x86_64
+    - name: flavour qt5.15.2 msvc2019 i686
+      shell: cmd
+      run: |
+        if exist clear-env.bat call clear-env.bat
+        if not exist "mysql-5.5.62-win32.zip" curl -L -o mysql-5.5.62-win32.zip "https://cdn.mysql.com//Downloads/MySQL-5.5/mysql-5.5.62-win32.zip"
+        if not exist "mysql-5.5.62-win32" 7z x -y "mysql-5.5.62-win32.zip"
+        if not exist "qtbase-everywhere-src-5.15.2.zip" curl -L -o qtbase-everywhere-src-5.15.2.zip "https://download.qt.io/official_releases/qt/5.15/5.15.2/submodules/qtbase-everywhere-src-5.15.2.zip"
+        if exist qtbase-everywhere-src-5.15.2 rmdir /q /s qtbase-everywhere-src-5.15.2
+        7z x -y "qtbase-everywhere-src-5.15.2.zip"
+        set INCLUDE=
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars32.bat"
+        set PATH=%CD%/mysql-5.5.62-win32/lib;%CD%/mysql-5.5.62-win32/bin;%CD%\Tools\Ninja;%PATH%
+        if not exist "qsqlmysql-qt5.15.2-msvc2019-i686" mkdir "qsqlmysql-qt5.15.2-msvc2019-i686"
+        pushd qtbase-everywhere-src-5.15.2
+        call configure -prefix C:\Qt\5.15.2\msvc2019_32 -opensource -confirm-license -shared -platform win32-msvc -opengl desktop -debug-and-release -nomake tests -nomake examples -no-feature-gui -no-feature-widgets -no-feature-network MYSQL_INCDIR=%CD%/../mysql-5.5.62-win32/include  MYSQL_LIBDIR=%CD%/../mysql-5.5.62-win32/lib
+        nmake
+        copy /y "plugins\sqldrivers\qsqlmysql.dll" "..\qsqlmysql-qt5.15.2-msvc2019-i686"
+        copy /y "plugins\sqldrivers\qsqlmysqld.dll" "..\qsqlmysql-qt5.15.2-msvc2019-i686"
+        popd
+        if not exist "libmysql-i686" mkdir "libmysql-i686"
+        copy /y "mysql-5.5.62-win32\lib\libmysql.dll" "libmysql-i686"
+        copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
+        7z a "libmysql-i686.zip" "libmysql-i686"
+        7z a "qsqlmysql-qt5.15.2-msvc2019-i686.zip" "qsqlmysql-qt5.15.2-msvc2019-i686"
+        if exist qtbase-everywhere-src-5.15.2 rmdir /q /s qtbase-everywhere-src-5.15.2
+    - name: flavour qt5.15.2 msvc2019 x86_64
       shell: cmd
       run: |
         if exist clear-env.bat call clear-env.bat
         if not exist "mysql-8.0.29-winx64.zip" curl -L -o mysql-8.0.29-winx64.zip "https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.29-winx64.zip"
         if not exist "mysql-8.0.29-winx64" 7z x -y "mysql-8.0.29-winx64.zip"
-        if not exist "qtbase-everywhere-src-6.2.0.zip" curl -L -o qtbase-everywhere-src-6.2.0.zip "https://download.qt.io/official_releases/qt/6.2/6.2.0/submodules/qtbase-everywhere-src-6.2.0.zip"
-        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
-        7z x -y "qtbase-everywhere-src-6.2.0.zip"
+        if not exist "qtbase-everywhere-src-5.15.2.zip" curl -L -o qtbase-everywhere-src-5.15.2.zip "https://download.qt.io/official_releases/qt/5.15/5.15.2/submodules/qtbase-everywhere-src-5.15.2.zip"
+        if exist qtbase-everywhere-src-5.15.2 rmdir /q /s qtbase-everywhere-src-5.15.2
+        7z x -y "qtbase-everywhere-src-5.15.2.zip"
         set INCLUDE=
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         set PATH=%CD%/mysql-8.0.29-winx64/lib;%CD%/mysql-8.0.29-winx64/bin;%CD%\Tools\Ninja;%PATH%
-        if not exist "qsqlmysql-qt6.2.0-msvc2019-x86_64" mkdir "qsqlmysql-qt6.2.0-msvc2019-x86_64"
-        pushd qtbase-everywhere-src-6.2.0
-        cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:\Qt\6.2.0\msvc2019_64 -DQT_QMAKE_TARGET_MKSPEC=win32-msvc -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl -DQT_BUILD_TESTS=FALSE -DQT_BUILD_EXAMPLES=FALSE -DCMAKE_CONFIGURATION_TYPES=Release;Debug -DQT_EXTRA_DEFINES=MySQL_INCLUDE_DIR=%CD%/../mysql-8.0.29-winx64/include;MySQL_LIBRARY=%CD%/../mysql-8.0.29-winx64/lib/libmysql.lib -DINPUT_opengl=desktop -G "Ninja Multi-Config" .
-        ninja -f build-Debug.ninja qsqlmysqld.dll
-        ninja -f build-Release.ninja qsqlmysql.dll
-        copy /y "plugins\sqldrivers\qsqlmysql.dll" "..\qsqlmysql-qt6.2.0-msvc2019-x86_64"
-        copy /y "plugins\sqldrivers\qsqlmysqld.dll" "..\qsqlmysql-qt6.2.0-msvc2019-x86_64"
+        if not exist "qsqlmysql-qt5.15.2-msvc2019-x86_64" mkdir "qsqlmysql-qt5.15.2-msvc2019-x86_64"
+        pushd qtbase-everywhere-src-5.15.2
+        call configure -prefix C:\Qt\5.15.2\msvc2019_64 -opensource -confirm-license -shared -platform win32-msvc -opengl desktop -debug-and-release -nomake tests -nomake examples -no-feature-gui -no-feature-widgets -no-feature-network MYSQL_INCDIR=%CD%/../mysql-8.0.29-winx64/include  MYSQL_LIBDIR=%CD%/../mysql-8.0.29-winx64/lib
+        nmake
+        copy /y "plugins\sqldrivers\qsqlmysql.dll" "..\qsqlmysql-qt5.15.2-msvc2019-x86_64"
+        copy /y "plugins\sqldrivers\qsqlmysqld.dll" "..\qsqlmysql-qt5.15.2-msvc2019-x86_64"
         popd
         if not exist "libmysql-x86_64" mkdir "libmysql-x86_64"
         copy /y "mysql-8.0.29-winx64\lib\libmysql.dll" "libmysql-x86_64"
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
-        7z a "qsqlmysql-qt6.2.0-msvc2019-x86_64.zip" "qsqlmysql-qt6.2.0-msvc2019-x86_64"
-        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
-    - name: flavour qt6.2.0 mingw8.1.0 x86_64
+        7z a "qsqlmysql-qt5.15.2-msvc2019-x86_64.zip" "qsqlmysql-qt5.15.2-msvc2019-x86_64"
+        if exist qtbase-everywhere-src-5.15.2 rmdir /q /s qtbase-everywhere-src-5.15.2
+    - name: flavour qt5.15.2 mingw8.1.0 i686
+      shell: cmd
+      run: |
+        if exist clear-env.bat call clear-env.bat
+        if not exist "mysql-5.5.62-win32.zip" curl -L -o mysql-5.5.62-win32.zip "https://cdn.mysql.com//Downloads/MySQL-5.5/mysql-5.5.62-win32.zip"
+        if not exist "mysql-5.5.62-win32" 7z x -y "mysql-5.5.62-win32.zip"
+        if not exist "qtbase-everywhere-src-5.15.2.zip" curl -L -o qtbase-everywhere-src-5.15.2.zip "https://download.qt.io/official_releases/qt/5.15/5.15.2/submodules/qtbase-everywhere-src-5.15.2.zip"
+        if exist qtbase-everywhere-src-5.15.2 rmdir /q /s qtbase-everywhere-src-5.15.2
+        7z x -y "qtbase-everywhere-src-5.15.2.zip"
+        if not exist "i686-8.1.0-release-posix-dwarf-rt_v6-rev0.7z" curl -L -o i686-8.1.0-release-posix-dwarf-rt_v6-rev0.7z "https://cytranet.dl.sourceforge.net/project/mingw-w64/Toolchains%%20targetting%%20Win32/Personal%%20Builds/mingw-builds/8.1.0/threads-posix/dwarf/i686-8.1.0-release-posix-dwarf-rt_v6-rev0.7z"
+        if exist mingw32 rmdir /q /s mingw32
+        7z x -y "i686-8.1.0-release-posix-dwarf-rt_v6-rev0.7z"
+        set PATH=%CD%/mysql-5.5.62-win32/lib;%CD%/mysql-5.5.62-win32/bin;%CD%\mingw32\bin;%CD%\Tools\Ninja;%PATH%
+        if not exist "qsqlmysql-qt5.15.2-mingw8.1.0-i686" mkdir "qsqlmysql-qt5.15.2-mingw8.1.0-i686"
+        pushd qtbase-everywhere-src-5.15.2
+        call configure -prefix C:\Qt\5.15.2\mingw81_32 -opensource -confirm-license -shared -platform win32-g++ -opengl desktop -debug-and-release -nomake tests -nomake examples -no-feature-gui -no-feature-widgets -no-feature-network MYSQL_INCDIR=%CD%/../mysql-5.5.62-win32/include  MYSQL_LIBDIR=%CD%/../mysql-5.5.62-win32/lib
+        mingw32-make
+        copy /y "plugins\sqldrivers\qsqlmysql.dll" "..\qsqlmysql-qt5.15.2-mingw8.1.0-i686"
+        copy /y "plugins\sqldrivers\qsqlmysqld.dll" "..\qsqlmysql-qt5.15.2-mingw8.1.0-i686"
+        popd
+        if not exist "libmysql-i686" mkdir "libmysql-i686"
+        copy /y "mysql-5.5.62-win32\lib\libmysql.dll" "libmysql-i686"
+        copy /y "mysql-5.5.62-win32\lib\libmysql.lib" "libmysql-i686"
+        7z a "libmysql-i686.zip" "libmysql-i686"
+        7z a "qsqlmysql-qt5.15.2-mingw8.1.0-i686.zip" "qsqlmysql-qt5.15.2-mingw8.1.0-i686"
+        if exist qtbase-everywhere-src-5.15.2 rmdir /q /s qtbase-everywhere-src-5.15.2
+    - name: flavour qt5.15.2 mingw8.1.0 x86_64
       shell: cmd
       run: |
         if exist clear-env.bat call clear-env.bat
         if not exist "mysql-8.0.29-winx64.zip" curl -L -o mysql-8.0.29-winx64.zip "https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.29-winx64.zip"
         if not exist "mysql-8.0.29-winx64" 7z x -y "mysql-8.0.29-winx64.zip"
-        if not exist "qtbase-everywhere-src-6.2.0.zip" curl -L -o qtbase-everywhere-src-6.2.0.zip "https://download.qt.io/official_releases/qt/6.2/6.2.0/submodules/qtbase-everywhere-src-6.2.0.zip"
-        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
-        7z x -y "qtbase-everywhere-src-6.2.0.zip"
+        if not exist "qtbase-everywhere-src-5.15.2.zip" curl -L -o qtbase-everywhere-src-5.15.2.zip "https://download.qt.io/official_releases/qt/5.15/5.15.2/submodules/qtbase-everywhere-src-5.15.2.zip"
+        if exist qtbase-everywhere-src-5.15.2 rmdir /q /s qtbase-everywhere-src-5.15.2
+        7z x -y "qtbase-everywhere-src-5.15.2.zip"
         if not exist "x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z" curl -L -o x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z "https://versaweb.dl.sourceforge.net/project/mingw-w64/Toolchains%%20targetting%%20Win64/Personal%%20Builds/mingw-builds/8.1.0/threads-posix/seh/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z"
         if exist mingw64 rmdir /q /s mingw64
         7z x -y "x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z"
         set PATH=%CD%/mysql-8.0.29-winx64/lib;%CD%/mysql-8.0.29-winx64/bin;%CD%\mingw64\bin;%CD%\Tools\Ninja;%PATH%
-        if not exist "qsqlmysql-qt6.2.0-mingw8.1.0-x86_64" mkdir "qsqlmysql-qt6.2.0-mingw8.1.0-x86_64"
-        pushd qtbase-everywhere-src-6.2.0
-        cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:\Qt\6.2.0\mingw81_64 -DQT_QMAKE_TARGET_MKSPEC=win32-g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DQT_BUILD_TESTS=FALSE -DQT_BUILD_EXAMPLES=FALSE -DCMAKE_CONFIGURATION_TYPES=Release;Debug -DQT_EXTRA_DEFINES=MySQL_INCLUDE_DIR=%CD%/../mysql-8.0.29-winx64/include;MySQL_LIBRARY=%CD%/../mysql-8.0.29-winx64/lib/libmysql.lib -DINPUT_opengl=desktop -G "Ninja Multi-Config" .
-        ninja -f build-Debug.ninja qsqlmysqld.dll
-        ninja -f build-Release.ninja qsqlmysql.dll
-        copy /y "plugins\sqldrivers\qsqlmysql.dll" "..\qsqlmysql-qt6.2.0-mingw8.1.0-x86_64"
-        copy /y "plugins\sqldrivers\qsqlmysqld.dll" "..\qsqlmysql-qt6.2.0-mingw8.1.0-x86_64"
+        if not exist "qsqlmysql-qt5.15.2-mingw8.1.0-x86_64" mkdir "qsqlmysql-qt5.15.2-mingw8.1.0-x86_64"
+        pushd qtbase-everywhere-src-5.15.2
+        call configure -prefix C:\Qt\5.15.2\mingw81_64 -opensource -confirm-license -shared -platform win32-g++ -opengl desktop -debug-and-release -nomake tests -nomake examples -no-feature-gui -no-feature-widgets -no-feature-network MYSQL_INCDIR=%CD%/../mysql-8.0.29-winx64/include  MYSQL_LIBDIR=%CD%/../mysql-8.0.29-winx64/lib
+        mingw32-make
+        copy /y "plugins\sqldrivers\qsqlmysql.dll" "..\qsqlmysql-qt5.15.2-mingw8.1.0-x86_64"
+        copy /y "plugins\sqldrivers\qsqlmysqld.dll" "..\qsqlmysql-qt5.15.2-mingw8.1.0-x86_64"
         popd
         if not exist "libmysql-x86_64" mkdir "libmysql-x86_64"
         copy /y "mysql-8.0.29-winx64\lib\libmysql.dll" "libmysql-x86_64"
         copy /y "mysql-8.0.29-winx64\lib\libmysql.lib" "libmysql-x86_64"
         7z a "libmysql-x86_64.zip" "libmysql-x86_64"
-        7z a "qsqlmysql-qt6.2.0-mingw8.1.0-x86_64.zip" "qsqlmysql-qt6.2.0-mingw8.1.0-x86_64"
-        if exist qtbase-everywhere-src-6.2.0 rmdir /q /s qtbase-everywhere-src-6.2.0
+        7z a "qsqlmysql-qt5.15.2-mingw8.1.0-x86_64.zip" "qsqlmysql-qt5.15.2-mingw8.1.0-x86_64"
+        if exist qtbase-everywhere-src-5.15.2 rmdir /q /s qtbase-everywhere-src-5.15.2
     - uses: ncipollo/release-action@v1
       if: startsWith( github.ref, 'refs/tags/')
       with:
         artifacts: |
-          qsqlmysql-qt6.2.0-msvc2019-x86_64.zip
-          qsqlmysql-qt6.2.0-mingw8.1.0-x86_64.zip
+          qsqlmysql-qt5.15.2-msvc2019-i686.zip
+          qsqlmysql-qt5.15.2-msvc2019-x86_64.zip
+          qsqlmysql-qt5.15.2-mingw8.1.0-i686.zip
+          qsqlmysql-qt5.15.2-mingw8.1.0-x86_64.zip
           libmysql-x86_64.zip
+          libmysql-i686.zip
         token: ${{ secrets.GITHUB_TOKEN }}
